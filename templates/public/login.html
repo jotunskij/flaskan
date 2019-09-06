@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}
+Logga in
+{% endblock %}
+{% block content %}
+<div class="py-5 text-center">
+    <img class="d-block mx-auto mb-4" src="https://agitura.se/wp-content/uploads/2019/07/cropped-73547_BPP_b-1-1-1.png"
+        alt="" width="200" height="66">
+    <h2>Kundportal</h2>
+    <p class="lead">Här kan du som kund logga in</p>
+</div>
+<div class="py-5 text-center">
+    <div>Fel: {{ request.args.get('error') }}</div>
+</div>
+<div class="row">
+    <div class="col"></div>
+    <div class="col-8">
+        <h4 class="mb-3">Inloggning</h4>
+        <form action="/login" method="POST">
+            <input type="hidden" name="next_url" value="{{ request.args.get('next_url') }}" />
+            <div class="form-row">
+                <div class="col-md-6">
+                    <label for="username">Användarnamn</label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="" value=""
+                        required>
+                </div>
+                <div class="col-md-6">
+                    <label for="password">Lösenord</label>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="" value=""
+                        required>
+                </div>
+            </div>
+            <div class="py-5">
+                <center>
+                    <div class="g-recaptcha" data-sitekey="6LcFrLIUAAAAAInA5JWSU4i4WcJJjZ-xk5jf3fkp"></div>
+                    <!--input class="form-control d-none" data-recaptcha="true" required data-error="Please complete the Captcha">
+                    <div class="help-block with-errors"></div-->
+                </center>
+            </div>
+            <hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Logga in</button>
+        </form>
+    </div>
+    <div class="col"></div>
+</div>
+{% endblock %}

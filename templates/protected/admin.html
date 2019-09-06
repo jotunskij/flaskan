@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}
+Administratör
+{% endblock %}
+{% block content %}
+<script>
+    apiGET('/api/admin')
+        .then(data => console.info(JSON.stringify(data)));
+</script>
+<div>Du är administratör</div>
+{% endblock %}

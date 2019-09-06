@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}
+Inloggad
+{% endblock %}
+{% block content %}
+<script>
+    apiGET('/api/user')
+        .then(data => console.info(JSON.stringify(data)));
+</script>
+<div>Du är inloggad</div>
+{% endblock %}

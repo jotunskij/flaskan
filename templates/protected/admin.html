@@ -14,7 +14,7 @@ Administratör
         }
 
         componentDidMount() {
-            apiGET('/api/user')
+            apiGET('/api/admin')
                 .then(json_resp => this.setState({'data': json_resp['data']}));
         }
 

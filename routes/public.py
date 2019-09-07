@@ -1,6 +1,7 @@
 from flask import (
     render_template, send_from_directory,
-    Blueprint, request, redirect, url_for
+    Blueprint, request, redirect, url_for,
+    make_response
 )
 from flask_jwt_extended import (
     set_access_cookies, set_refresh_cookies,
@@ -22,6 +23,7 @@ def index():
 def login_get():
     return render_template('public/login.html')
 
+"""
 @public_routes.route('/login', methods=['POST'])
 def login_post():
     next_url = request.args.get('next_url')
@@ -60,9 +62,10 @@ def login_post():
     set_access_cookies(response, login_response.json()['access_token'])
     set_refresh_cookies(response, login_response.json()['refresh_token'])
     return response
+"""
 
 @public_routes.route('/logout', methods=['GET'])
 def logout():
-    response = redirect(url_for('.login_get'))
+    response = make_response(render_template('public/logout.html'))
     unset_jwt_cookies(response)
-    return response
+    return render_template('public/logout.html')

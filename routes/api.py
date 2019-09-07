@@ -6,7 +6,8 @@ from flask import (
 from flask_jwt_extended import (
     jwt_required, create_access_token,
     get_jwt_identity, create_refresh_token,
-    jwt_refresh_token_required
+    jwt_refresh_token_required,
+    set_access_cookies, set_refresh_cookies
 )
 
 api_routes = Blueprint('api_routes', __name__)
@@ -14,8 +15,7 @@ api_routes = Blueprint('api_routes', __name__)
 @api_routes.route('/api/login', methods=['POST'])
 def api_login():
     if not request.is_json:
-       return jsonify({"error": "Missing JSON in request"}), 400
-    
+        return jsonify({"error": "Missing JSON in request"}), 400
     username = request.json.get('username', None)
     password = request.json.get('password', None)
     if not username:
@@ -32,14 +32,19 @@ def api_login():
     } 
     access_token = create_access_token(identity)
     refresh_token = create_refresh_token(identity)
-    return jsonify(access_token=access_token, refresh_token=refresh_token), 200
+    response = jsonify(access_token=access_token, refresh_token=refresh_token)
+    set_access_cookies(response, access_token)
+    set_refresh_cookies(response, refresh_token)
+    return response, 200
 
 @api_routes.route('/api/token/refresh', methods=['POST'])
 @jwt_refresh_token_required
 def api_refresh_token():
     identity = get_jwt_identity()
     access_token = create_access_token(identity=identity)
-    return jsonify(access_token=access_token), 200
+    response = jsonify(access_token=access_token)
+    set_access_cookies(response, access_token)
+    return response, 200
 
 @api_routes.route('/api/admin', methods=['GET'])
 @jwt_required

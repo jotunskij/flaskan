@@ -16,8 +16,8 @@ Logga in
     <div class="col"></div>
     <div class="col-8">
         <h4 class="mb-3">Inloggning</h4>
-        <form action="/login" method="POST">
-            <input type="hidden" name="next_url" value="{{ request.args.get('next_url') }}" />
+        <form>
+            <input id="next_url" type="hidden" name="next_url" value="{{ request.args.get('next_url') if request.args.get('next_url') }}" />
             <div class="form-row">
                 <div class="col-md-6">
                     <label for="username">Användarnamn</label>
@@ -38,7 +38,7 @@ Logga in
                 </center>
             </div>
             <hr class="mb-4">
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Logga in</button>
+            <button onClick="(async () => { await login(); })()" class="btn btn-primary btn-lg btn-block" type="button">Logga in</button>
         </form>
     </div>
     <div class="col"></div>

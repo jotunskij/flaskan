@@ -22,15 +22,14 @@ def group_required_web(group, next_url):
         @wraps(fn)
         def wrapper(*args, **kwargs):
             identity = get_jwt_identity()
-            print(f'Identity is {identity}')
-            print(f'Group: {group}, id groups: {identity["groups"]}')
-            print(f'Cookies: {request.cookies}')
+            print(f'Identity is: {identity}')
             if group not in identity['groups']:
-                print('Bad groups -> redirecting to login')
-                return redirect(
-                    url_for('public_routes.login_get', 
-                    next_url=next_url, error='Du saknar rättigheter')
-                )
+                print(f'Bad groups -> redirecting to login')
+                return redirect(url_for(
+                    'public_routes.login_get', 
+                    next_url=next_url,
+                    error='Du saknar rättigheter'
+                ))
             return fn(*args, **kwargs)
         return wrapper
     return decorator
@@ -38,7 +37,7 @@ def group_required_web(group, next_url):
 def log_in_user(username, password):
     # Perform login functionality
     # return {'user_id': 1, 'groups': ['admin']}
-    return {'user_id': 1, 'groups': ['user']}
+    return {'user_id': 1, 'groups': ['admin', 'user']}
 
 def validate_recaptcha(token):
     secret = os.environ.get('RECAPTCHA_SECRET')

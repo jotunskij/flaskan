@@ -3,9 +3,41 @@
 Administratör
 {% endblock %}
 {% block content %}
-<script>
-    apiGET('/api/admin')
-        .then(data => console.info(JSON.stringify(data)));
+<script type='text/babel'>
+    const rootElement = document.getElementById('root');
+
+    class DataComponent extends React.Component { 
+
+        constructor() {
+            super();
+            this.state = { 'data': null };
+        }
+
+        componentDidMount() {
+            apiGET('/api/user')
+                .then(json_resp => this.setState({'data': json_resp['data']}));
+        }
+
+        render() {
+            return (
+                <div>Data is {this.state.data}</div>
+            );
+        }
+    }
+
+    function App() {
+        return (
+            <div>
+                <DataComponent />
+            </div>
+        );
+    }
+
+    ReactDOM.render(
+        <App />,
+        rootElement
+    );
 </script>
-<div>Du är administratör</div>
+<div>Du är inloggad som administratör</div>
+<div id='root'></div>
 {% endblock %}

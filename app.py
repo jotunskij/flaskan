@@ -23,8 +23,9 @@ app.register_blueprint(public_routes)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = app.secret_key
 # Short expiration to demo refresh tokens
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 300
-app.config['JWT_TOKEN_LOCATION'] = ['headers', 'cookies']
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 10
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 
 @jwt.user_claims_loader
 def add_claims_to_access_token(identity):
@@ -32,14 +33,6 @@ def add_claims_to_access_token(identity):
         'user_id': identity['user_id'],
         'groups': identity['groups']
     }
-
-@jwt.expired_token_loader
-def token_expired_callback(expired_token):
-    return redirect(url_for(
-        'public_routes.login_get',
-        next_url='/',
-        error='Din token har blivit gammal. Logga in på nytt.'
-    ))
 
 @app.before_first_request
 def initialize():

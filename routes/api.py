@@ -16,6 +16,7 @@ api_routes = Blueprint('api_routes', __name__)
 def api_login():
     if not request.is_json:
         return jsonify({"error": "Missing JSON in request"}), 400
+    print(request.json)
     username = request.json.get('username', None)
     password = request.json.get('password', None)
     if not username:
@@ -30,9 +31,9 @@ def api_login():
         'user_id': user['user_id'],
         'groups': user['groups']
     } 
+    response = jsonify({'login': True})
     access_token = create_access_token(identity)
     refresh_token = create_refresh_token(identity)
-    response = jsonify(access_token=access_token, refresh_token=refresh_token)
     set_access_cookies(response, access_token)
     set_refresh_cookies(response, refresh_token)
     return response, 200
@@ -42,7 +43,7 @@ def api_login():
 def api_refresh_token():
     identity = get_jwt_identity()
     access_token = create_access_token(identity=identity)
-    response = jsonify(access_token=access_token)
+    response = jsonify({'refreshed': True})
     set_access_cookies(response, access_token)
     return response, 200
 

@@ -4,8 +4,9 @@ Logga in
 {% endblock %}
 {% block content %}
 <div class="py-5 text-center">
-    <img class="d-block mx-auto mb-4" src="https://agitura.se/wp-content/uploads/2019/07/cropped-73547_BPP_b-1-1-1.png"
-        alt="" width="200" height="66">
+    <img class="d-block mx-auto mb-4"
+        src="https://www.kth.se/polopoly_fs/1.77257.1550147376!/KTH_Logotyp_RGB_2013-2.svg" alt="" width="200"
+        height="200">
     <h2>Kundportal</h2>
     <p class="lead">Här kan du som kund logga in</p>
 </div>
@@ -17,7 +18,8 @@ Logga in
     <div class="col-8">
         <h4 class="mb-3">Inloggning</h4>
         <form>
-            <input id="next_url" type="hidden" name="next_url" value="{{ request.args.get('next_url') if request.args.get('next_url') }}" />
+            <input id="next_url" type="hidden" name="next_url"
+                value="{{ request.args.get('next_url') if request.args.get('next_url') }}" />
             <div class="form-row">
                 <div class="col-md-6">
                     <label for="username">Användarnamn</label>
@@ -38,7 +40,8 @@ Logga in
                 </center>
             </div>
             <hr class="mb-4">
-            <button onClick="(async () => { await login(); })()" class="btn btn-primary btn-lg btn-block" type="button">Logga in</button>
+            <button onClick="(async () => { await login(); })()" class="btn btn-primary btn-lg btn-block"
+                type="button">Logga in</button>
         </form>
     </div>
     <div class="col"></div>

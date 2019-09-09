@@ -23,7 +23,7 @@ app.register_blueprint(public_routes)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = app.secret_key
 # Short expiration to demo refresh tokens
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 10
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 300
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 

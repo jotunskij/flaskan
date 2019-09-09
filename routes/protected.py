@@ -2,9 +2,9 @@ from flask import (
     Blueprint, render_template
 )
 from flask_jwt_extended import (
-    jwt_required
+    jwt_optional
 )
-from util import group_required_web
+from util import group_required_web, group_optional_web
 
 protected_routes = Blueprint('protected_routes', __name__)
 
@@ -19,3 +19,14 @@ def user():
 def admin():
     print(f'Rendering /protected/admin')
     return render_template('protected/admin.html')
+
+@protected_routes.route('/protected/dynamic', methods=['GET'])
+@jwt_optional
+@group_optional_web(group='admin')
+def dynamic(passed=False):
+    if passed:
+        return render_template('protected/admin.html')
+    else:
+        return render_template('protected/user.html')
+    # Or send a template variable
+    # render_template('protected/or_not.html, is_admin=passed)

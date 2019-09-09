@@ -20,6 +20,21 @@ def group_required_api(group):
         return wrapper
     return decorator
 
+def group_optional_web(group):
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            identity = get_jwt_identity()
+            print(identity)
+            if not identity or group not in identity['groups']:
+                return fn(*args, **kwargs)
+            else:
+                print('Passed')
+                kwargs['passed'] = True
+                return fn(*args, **kwargs)
+        return wrapper
+    return decorator
+
 def group_required_web(group, next_url):
     def decorator(fn):
         @wraps(fn)

@@ -21,7 +21,6 @@ def admin():
     return render_template('protected/admin.html')
 
 @protected_routes.route('/protected/dynamic', methods=['GET'])
-@jwt_optional
 @group_optional_web(group='admin')
 def dynamic(passed=False):
     if passed:

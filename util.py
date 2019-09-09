@@ -24,8 +24,13 @@ def group_optional_web(group):
     def decorator(fn):
         @wraps(fn)
         def wrapper(*args, **kwargs):
+            try:
+                verify_jwt_in_request()
+            except Exception:
+                response = redirect_to_login()
+                unset_jwt_cookies(response)
+                return response
             identity = get_jwt_identity()
-            print(identity)
             if not identity or group not in identity['groups']:
                 return fn(*args, **kwargs)
             else:
@@ -52,7 +57,9 @@ def group_required_web(group, next_url):
         return wrapper
     return decorator
 
-def redirect_to_login(next_url):
+def redirect_to_login(next_url=None):
+    if not next_url:
+        next_url = '.index'
     return redirect(url_for(
         'public_routes.login', 
         next_url=next_url,

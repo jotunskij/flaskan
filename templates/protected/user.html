@@ -15,7 +15,8 @@ Inloggad
 
         componentDidMount() {
             apiGET('/api/user')
-                .then(json_resp => this.setState({'data': json_resp['data']}));
+                .then(json_resp => this.setState({'data': json_resp['data']}))
+                .catch(err => console.log(err));
         }
 
         render() {

@@ -1,5 +1,6 @@
 import os
 import requests
+import util
 from flask import Flask, redirect, url_for
 from flask_jwt_extended import JWTManager
 from routes.protected import protected_routes
@@ -12,9 +13,7 @@ from routes.public import public_routes
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = os.environ.get('SECRET_KEY')
-app.register_blueprint(protected_routes)
 app.register_blueprint(api_routes)
-app.register_blueprint(public_routes)
 
 #
 # JWT SETUP
@@ -23,7 +22,7 @@ app.register_blueprint(public_routes)
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = app.secret_key
 # Short expiration to demo refresh tokens
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 300
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 10
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 
@@ -33,6 +32,11 @@ def add_claims_to_access_token(identity):
         'user_id': identity['user_id'],
         'groups': identity['groups']
     }
+
+@jwt.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    jti = decrypted_token['jti']
+    return jti in util.TOKEN_BLACKLIST
 
 @app.before_first_request
 def initialize():

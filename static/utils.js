@@ -1,6 +1,7 @@
 function createRequest(method, payload = null) {
     req = {
         method: method,
+        mode: 'cors',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json; charset=utf-8',
@@ -16,7 +17,7 @@ async function logout() {
 }
 
 async function login() {
-    const final_url = createUrl('/api/login');
+    const final_url = createApiUrl('/api/login');
     var next_url = document.getElementById('next_url');
     const payload = {
         'username': document.getElementById('username').value,
@@ -34,13 +35,13 @@ async function login() {
 }
 
 async function apiGET(url) {
-    const final_url = createUrl(url);
-    req = createRequest('GET')
+    const final_url = createApiUrl(url);
+    req = createRequest('GET');
     return await apiCall(final_url, req);
 }
 
 async function apiPOST(url, payload = {}) {
-    const final_url = createUrl(url);
+    const final_url = createApiUrl(url);
     req = createRequest('POST', payload)
     return await apiCall(final_url, req);
 }
@@ -49,7 +50,7 @@ async function apiCall(url, req) {
     response = await fetch(url, req);
     if (response.status == 401) {
         // Try to refresh token
-        const ref_url = createUrl('/api/token/refresh')
+        const ref_url = createApiUrl('/api/token/refresh')
         ref_req = createRequest('POST')
         ref_resp = await fetch(ref_url, ref_req)
         if (ref_resp.ok) {
@@ -63,4 +64,9 @@ async function apiCall(url, req) {
 
 function createUrl(path) {
     return `${window.location.protocol}//${window.location.host}${path}`
+}
+
+function createApiUrl(path) {
+    const api_server = 'http://localhost:5001'
+    return `${api_server}${path}`
 }

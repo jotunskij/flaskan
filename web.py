@@ -38,8 +38,11 @@ def add_claims_to_access_token(identity):
 def refresh_token(expired_token):
     print('Token has expired - refreshing')
     csrf_token = expired_token.get('csrf')
-    util.api_refresh(csrf_token)
-    return redirect(url_for('public_routes.index'))
+    api_response = util.api_refresh(csrf_token)
+    response = redirect(url_for('public_routes.index'))
+    for name, value in api_response.cookies.items():
+        response.set_cookie(name, value)
+    return response
 
 @app.before_first_request
 def initialize():

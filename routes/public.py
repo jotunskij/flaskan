@@ -8,7 +8,7 @@ from flask_jwt_extended import (
     unset_jwt_cookies, jwt_optional,
     get_raw_jwt, get_jwt_identity,
     create_access_token, create_refresh_token,
-    jwt_refresh_token_required
+    jwt_refresh_token_required, verify_jwt_in_request
 )
 import requests
 import util
@@ -38,8 +38,11 @@ def login():
         return response
 
 @public_routes.route('/logout', methods=['GET'])
-@jwt_optional
 def logout():
+    try:
+        verify_jwt_in_request()
+    except Exception as ex:
+        print(ex)
     util.api_logout((get_raw_jwt() or {}).get("csrf"))
     response = make_response(redirect(url_for('public_routes.logout_refresh')))
     return response

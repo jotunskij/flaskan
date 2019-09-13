@@ -52,6 +52,7 @@ def group_required_web(group, next_url):
                 unset_jwt_cookies(response)
                 return response
             identity = get_jwt_identity()
+            print(identity)
             if not identity or group not in identity['groups']:
                 return redirect_to_login(next_url)
             return fn(*args, **kwargs)
@@ -74,7 +75,8 @@ def redirect_to_login(next_url=None, error=None):
 
 def log_in_user(username, password):
     # Perform login functionality
-    return {'user_id': 1, 'groups': ['admin', 'user']}
+    #return {'user_id': 1, 'groups': ['admin', 'user']}
+    return {'user_id': 1, 'groups': ['user']}
 
 def validate_recaptcha(token):
     secret = os.environ.get('RECAPTCHA_SECRET')

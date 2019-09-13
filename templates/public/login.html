@@ -17,7 +17,7 @@ Logga in
     <div class="col"></div>
     <div class="col-8">
         <h4 class="mb-3">Inloggning</h4>
-        <form method='POST'>
+        <form method='POST' action='/login'>
             <input id="next_url" type="hidden" name="next_url"
                 value="{{ request.args.get('next_url') if request.args.get('next_url') }}" />
             <div class="form-row">
